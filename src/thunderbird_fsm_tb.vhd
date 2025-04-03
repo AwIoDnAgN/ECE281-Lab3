@@ -136,10 +136,10 @@ begin
         w_right <= '1';
         wait for k_clk_period;
 
-        assert (w_lights_R = "100") report "ERROR: R1 state incorrect!" severity error;
+        assert (w_lights_R = "001") report "ERROR: R1 state incorrect!" severity error;
         wait for k_clk_period;
 
-        assert (w_lights_R = "110") report "ERROR: R2 state incorrect!" severity error;
+        assert (w_lights_R = "011") report "ERROR: R2 state incorrect!" severity error;
         wait for k_clk_period;
 
         assert (w_lights_R = "111") report "ERROR: R3 state incorrect!" severity error;

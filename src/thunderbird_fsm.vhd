@@ -145,8 +145,8 @@ begin
                   "111" when current_state = "01000000" else        -- Hazard Mode
                   "000";                                            -- Default Off
     o_lights_R <= "000" when current_state = "10000000" else
-                  "100" when current_state = "00100000" else
-                  "110" when current_state = "00010000" else
+                  "001" when current_state = "00100000" else
+                  "011" when current_state = "00010000" else
                   "111" when current_state = "00001000" else
                   "111" when current_state = "01000000" else  -- Hazard Mode (All ON)
                   "000";                                      -- Default OFF
