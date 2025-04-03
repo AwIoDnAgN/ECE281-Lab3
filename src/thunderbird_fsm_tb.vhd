@@ -187,8 +187,35 @@ begin
 
         assert (w_lights_R = "000") report "ERROR: Right turn did not reset properly!" severity error;
         wait for k_clk_period;
+        
+        -- **TEST CASE 7: FREEZE LEFT TURN MID-SEQUENCE**
+        report "TEST 7: Freezing Left Turn Signal...";
+        w_reset <= '0';
+        w_right <= '0';
+        w_left <= '1';
+        wait for k_clk_period * 2;  -- Wait for L2
+        w_freeze <= '1';  -- Interrupt before reaching L3
+        wait for k_clk_period;
 
-        -- **TEST CASE 7: RAPID INPUT CHANGES**
+        assert (w_lights_L = "011") report "ERROR: Left turn did not freeze properly!" severity error;
+        w_freeze <= '0';
+        wait for k_clk_period;
+        
+        -- **TEST CASE 8: FREEZE RIGHT TURN MID-SEQUENCE**
+        report "TEST 8: Freezing Right Turn Signal...";
+        w_reset <= '0';
+        w_left <= '0';
+        wait for k_clk_period;
+        w_right <= '1';
+        wait for k_clk_period * 2;  -- Wait for R2
+        w_freeze <= '1';  -- Interrupt before reaching R3
+        wait for k_clk_period;
+
+        assert (w_lights_R = "011") report "ERROR: Right turn did not freeze properly!" severity error;
+        w_freeze <= '0';
+        wait for k_clk_period;
+
+        -- **TEST CASE 9: RAPID INPUT CHANGES**
         report "TEST 7: Rapidly toggling inputs...";
         w_left  <= '1'; wait for k_clk_period;
         w_left  <= '0'; wait for k_clk_period;
