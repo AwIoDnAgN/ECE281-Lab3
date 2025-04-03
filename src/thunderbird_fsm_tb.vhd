@@ -103,7 +103,7 @@ begin
 	-- Test Plan Process --------------------------------
 	sim_proc: process
 	begin
--- **TEST CASE 1: RESET FSM**
+        -- **TEST CASE 1: RESET FSM**
         -- Ensure the FSM starts in the OFF state.
         report "TEST 1: Applying reset...";
         w_reset <= '1';

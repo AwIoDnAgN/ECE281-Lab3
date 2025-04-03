@@ -89,7 +89,6 @@ entity thunderbird_fsm is
     port (
         i_clk, i_reset  : in    std_logic;
         i_left, i_right : in    std_logic;
-        i_clk_freeze    : in    std_logic;
         o_lights_L      : out   std_logic_vector(2 downto 0);
         o_lights_R      : out   std_logic_vector(2 downto 0)
     );
@@ -156,16 +155,12 @@ begin
 	-- PROCESSES --------------------------------------------------------------------
     register_proc : process (i_clk, i_reset)
 	begin
-	   if i_reset = '1' then
-	       current_state <= "10000000"; --Reset state is yellow
-	   elsif rising_edge(i_clk) then
-           if i_clk_freeze = '0' then
-               current_state <= next_state; -- next state becomes current state
-           else
-               current_state <= current_state;
-	       end if;
-	   end if;
-	end process register_proc;
+    if i_reset = '1' then
+        current_state <= "10000000"; -- Reset state is OFF
+    elsif rising_edge(i_clk) then
+        current_state <= next_state;
+    end if;
+end process register_proc;
 	-----------------------------------------------------					   
 				  
 end thunderbird_fsm_arch;

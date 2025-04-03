@@ -88,11 +88,10 @@ architecture top_basys3_arch of top_basys3 is
 	-- declare components
 component thunderbird_fsm is
     port (
-        i_clk, i_reset  : in    std_logic;
-        i_left, i_right : in    std_logic;
-        i_clk_freeze    : in    std_logic;
-        o_lights_L      : out   std_logic_vector(2 downto 0);
-        o_lights_R      : out   std_logic_vector(2 downto 0)
+        i_clk, i_reset, i_freeze    : in    std_logic;
+        i_left, i_right             : in    std_logic;
+        o_lights_L                  : out   std_logic_vector(2 downto 0);
+        o_lights_R                  : out   std_logic_vector(2 downto 0)
     );
 end component thunderbird_fsm;
 
@@ -115,7 +114,6 @@ thunderbird_inst: thunderbird_fsm
     port map(
         i_reset         => btnR,
         i_clk           => w_clk,
-        i_clk_freeze    => btnL,
         i_left          => sw(15),
         i_right         => sw(0),
         o_lights_L => w_lights_L,
