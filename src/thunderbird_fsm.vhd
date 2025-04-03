@@ -89,6 +89,7 @@ entity thunderbird_fsm is
     port (
         i_clk, i_reset  : in    std_logic;
         i_left, i_right : in    std_logic;
+        i_clk_freeze    : in    std_logic;
         o_lights_L      : out   std_logic_vector(2 downto 0);
         o_lights_R      : out   std_logic_vector(2 downto 0)
     );
@@ -145,8 +146,8 @@ begin
                   "111" when current_state = "01000000" else        -- Hazard Mode
                   "000";                                            -- Default Off
     o_lights_R <= "000" when current_state = "10000000" else
-                  "001" when current_state = "00100000" else
-                  "011" when current_state = "00010000" else
+                  "100" when current_state = "00100000" else
+                  "110" when current_state = "00010000" else
                   "111" when current_state = "00001000" else
                   "111" when current_state = "01000000" else  -- Hazard Mode (All ON)
                   "000";                                      -- Default OFF
@@ -158,7 +159,11 @@ begin
 	   if i_reset = '1' then
 	       current_state <= "10000000"; --Reset state is yellow
 	   elsif rising_edge(i_clk) then
-	       current_state <= next_state; -- next state becomes current state
+           if i_clk_freeze = '0' then
+               current_state <= next_state; -- next state becomes current state
+           else
+               current_state <= current_state;
+	       end if;
 	   end if;
 	end process register_proc;
 	-----------------------------------------------------					   

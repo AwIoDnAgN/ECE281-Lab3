@@ -86,21 +86,58 @@ end top_basys3;
 architecture top_basys3_arch of top_basys3 is 
   
 	-- declare components
+component thunderbird_fsm is
+    port (
+        i_clk, i_reset  : in    std_logic;
+        i_left, i_right : in    std_logic;
+        i_clk_freeze    : in    std_logic;
+        o_lights_L      : out   std_logic_vector(2 downto 0);
+        o_lights_R      : out   std_logic_vector(2 downto 0)
+    );
+end component thunderbird_fsm;
 
-  
+component clock_divider is
+    generic ( constant k_DIV : natural := 2	);
+    port (
+        i_clk    : in std_logic;
+	    i_reset  : in std_logic;		   -- asynchronous
+	    o_clk    : out std_logic		   -- divided (slow) clock
+    );
+end component clock_divider;
+
+    signal w_clk         : std_logic;
+    signal w_lights_L    : std_logic_vector(2 downto 0);
+    signal w_lights_R    : std_logic_vector(2 downto 0);
+
 begin
 	-- PORT MAPS ----------------------------------------
-
+thunderbird_inst: thunderbird_fsm
+    port map(
+        i_reset         => btnR,
+        i_clk           => w_clk,
+        i_clk_freeze    => btnL,
+        i_left          => sw(15),
+        i_right         => sw(0),
+        o_lights_L => w_lights_L,
+        o_lights_R => w_lights_R
+    );
 	
 	
 	-- CONCURRENT STATEMENTS ----------------------------
-	
 	-- ground unused LEDs
 	-- leave unused switches UNCONNECTED
-	
+clkdiv_inst : clock_divider 		--instantiation of clock_divider to take 
+    generic map ( k_DIV => 12500000 ) -- 4 Hz clock from 100 MHz
+    port map (						  
+        i_clk   => clk,
+        i_reset => btnR,
+        o_clk   => w_clk
+    );
 	-- Ignore the warnings associated with these signals
 	-- Alternatively, you can create a different board implementation, 
 	--   or make additional adjustments to the constraints file
+	led(15 downto 13) <= w_lights_L;  -- Left turn signal
+    led(2 downto 0)   <= w_lights_R;  -- Right turn signal
 	led(12 downto 3) <= (others => '0');
 	
 end top_basys3_arch;
