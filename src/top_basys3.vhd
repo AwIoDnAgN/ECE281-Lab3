@@ -135,7 +135,7 @@ clkdiv_inst : clock_divider 		--instantiation of clock_divider to take
 	-- Alternatively, you can create a different board implementation, 
 	--   or make additional adjustments to the constraints file
 	led(15 downto 13) <= w_lights_L;  -- Left turn signal
-    led(2 downto 0)   <= w_lights_R;  -- Right turn signal
+    led(0 downto 2)   <= w_lights_R;  -- Right turn signal
 	led(12 downto 3) <= (others => '0');
 	
 end top_basys3_arch;
