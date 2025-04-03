@@ -70,6 +70,7 @@ architecture test_bench of thunderbird_fsm_tb is
 	signal w_left      :   std_logic := '0';
 	signal w_right     :   std_logic := '0';
 	signal w_reset     :   std_logic := '0';
+	signal w_freeze    :   std_logic := '0';
 	signal w_clk       :   std_logic := '0';
 	
 	signal w_lights_L  :   std_logic_vector(2 downto 0);
@@ -84,6 +85,7 @@ begin
 	  i_left          => w_left,
 	  i_right         => w_right,
 	  i_reset         => w_reset,
+	  i_freeze        => w_freeze,
 	  i_clk           => w_clk,
 	  o_lights_L      => w_lights_L,
 	  o_lights_R      => w_lights_R
