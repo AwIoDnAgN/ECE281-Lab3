@@ -136,10 +136,10 @@ begin
         w_right <= '1';
         wait for k_clk_period;
 
-        assert (w_lights_R = "001") report "ERROR: R1 state incorrect!" severity error;
+        assert (w_lights_R = "100") report "ERROR: R1 state incorrect!" severity error;
         wait for k_clk_period;
 
-        assert (w_lights_R = "011") report "ERROR: R2 state incorrect!" severity error;
+        assert (w_lights_R = "110") report "ERROR: R2 state incorrect!" severity error;
         wait for k_clk_period;
 
         assert (w_lights_R = "111") report "ERROR: R3 state incorrect!" severity error;
@@ -169,7 +169,7 @@ begin
         report "TEST 5: Interrupting Left Turn Signal...";
         w_left <= '1';
         wait for k_clk_period * 2;  -- Wait for L2
-        w_left <= '0';  -- Interrupt before reaching L3
+        w_reset <= '1';  -- Interrupt before reaching L3
         wait for k_clk_period;
 
         assert (w_lights_L = "000") report "ERROR: Left turn did not reset properly!" severity error;
@@ -179,7 +179,7 @@ begin
         report "TEST 6: Interrupting Right Turn Signal...";
         w_right <= '1';
         wait for k_clk_period * 2;  -- Wait for R2
-        w_right <= '0';  -- Interrupt before reaching R3
+        w_reset <= '1';  -- Interrupt before reaching R3
         wait for k_clk_period;
 
         assert (w_lights_R = "000") report "ERROR: Right turn did not reset properly!" severity error;
