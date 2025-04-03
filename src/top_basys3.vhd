@@ -88,10 +88,11 @@ architecture top_basys3_arch of top_basys3 is
 	-- declare components
 component thunderbird_fsm is
     port (
-        i_clk, i_reset    : in    std_logic;
-        i_left, i_right   : in    std_logic;
-        o_lights_L        : out   std_logic_vector(2 downto 0);
-        o_lights_R        : out   std_logic_vector(2 downto 0)
+        i_clk, i_reset  : in    std_logic;
+        i_freeze        : in    std_logic;
+        i_left, i_right : in    std_logic;
+        o_lights_L      : out   std_logic_vector(2 downto 0);
+        o_lights_R      : out   std_logic_vector(2 downto 0)
     );
 end component thunderbird_fsm;
 
@@ -113,6 +114,7 @@ begin
 thunderbird_inst: thunderbird_fsm
     port map(
         i_reset         => btnR,
+        i_freeze        => btnL,
         i_clk           => w_clk,
         i_left          => sw(15),
         i_right         => sw(0),
@@ -135,7 +137,9 @@ clkdiv_inst : clock_divider 		--instantiation of clock_divider to take
 	-- Alternatively, you can create a different board implementation, 
 	--   or make additional adjustments to the constraints file
 	led(15 downto 13) <= w_lights_L;  -- Left turn signal
-    led(0 downto 2)   <= w_lights_R;  -- Right turn signal
+    led(2)   <= w_lights_R(0);  -- Right turn signal
+    led(1)   <= w_lights_R(1);
+    led(0)   <= w_lights_R(2);
 	led(12 downto 3) <= (others => '0');
 	
 end top_basys3_arch;

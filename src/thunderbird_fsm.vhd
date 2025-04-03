@@ -88,6 +88,7 @@ library ieee;
 entity thunderbird_fsm is
     port (
         i_clk, i_reset  : in    std_logic;
+        i_freeze        : in    std_logic;
         i_left, i_right : in    std_logic;
         o_lights_L      : out   std_logic_vector(2 downto 0);
         o_lights_R      : out   std_logic_vector(2 downto 0)
@@ -153,10 +154,12 @@ begin
     ---------------------------------------------------------------------------------
 	
 	-- PROCESSES --------------------------------------------------------------------
-    register_proc : process (i_clk, i_reset)
+    register_proc : process (i_clk, i_reset, i_freeze)
 	begin
     if i_reset = '1' then
         current_state <= "10000000"; -- Reset state is OFF
+    elsif i_freeze = '1' then
+        current_state <= current_state;
     elsif rising_edge(i_clk) then
         current_state <= next_state;
     end if;
